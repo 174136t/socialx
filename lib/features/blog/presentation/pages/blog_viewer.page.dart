@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:socialx/core/theme/app_pallette.dart';
 import 'package:socialx/core/utils/calculate_reading_time.dart';
@@ -46,13 +47,18 @@ class BlogViewerPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(blog.imageUrl),
+                  child:CachedNetworkImage(
+                    imageUrl: blog.imageUrl,
+                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   blog.content,
                   style: const TextStyle(fontSize: 16, height: 2),
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
