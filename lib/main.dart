@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           return state is AppUserLoggedIn;
         },
         builder: (context, isLoggedIn) {
-          if (isLoggedIn){
+          if (isLoggedIn) {
             return const BlogPage();
           }
           return const SignInPage();
@@ -58,3 +58,67 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+
+
+
+
+// abstraction hiding complex imlementation details and showing only essential features
+// abstract class NotificationService {
+//   void sendNotifications(String msg);
+// }
+// //open/closed principle: this class is open for extension but closed for modification
+
+// // concrete implementations
+// class EmailNotification implements NotificationService { // inheritance
+
+//   @override 
+//   void sendNotifications(String msg) {
+//     print("Email notification : $msg"); //single responsibility principle: this class is only responsible for sending email notifications
+//   }
+// }
+
+// class SMSNotification implements NotificationService { // inheritance
+
+//   @override
+//   void sendNotifications(String msg) {
+//     print("SMS notification send : $msg");
+//   }
+// }
+
+// class PushNotification implements NotificationService { // inheritance
+//   @override
+//   void sendNotifications(String msg) {
+//     print("Push notification msg: $msg");
+//   }
+// }
+
+// //liskov substitution principle: all concrete implementations can be used interchangeably
+
+// //interface segregation principle: NotificationService interface is small and focused, allowing for easy implementation without unnecessary methods
+// class NotificationManager {
+//   final NotificationService service; // dependancy inversion-> depends on notifiationservice on abstraction not on a concreations 
+//   NotificationManager(this.service); 
+
+//   void notify(String msg) {
+//     service.sendNotifications(msg); // polymorphism: NotificationManager can work with any NotificationService implementation
+//   }
+// }
+
+
+// void main() {
+//   final emailService = EmailNotification();
+//   final smsService = SMSNotification();
+//   final pushService = PushNotification();
+
+//   final emailManager = NotificationManager(emailService);
+//   final smsManager = NotificationManager(smsService);
+//   final pushManager = NotificationManager(pushService);
+
+//   emailManager.notify("Welcome to our platform!");
+//   smsManager.notify("Your OTP is 123456");
+//   pushManager.notify("New message received!");
+// }
+
+// //enca
