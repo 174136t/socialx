@@ -29,6 +29,9 @@ dependencies:
   isar_flutter_libs: ^4.0.0-dev.13
   path_provider: ^2.1.0
   cached_network_image: ^3.4.1
+  dio: ^5.8.0+1
+  shimmer: ^3.0.0
+  animated_notch_bottom_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -43,3 +46,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  assets:
+    - assets/
+  
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Regular-400.ttf
+        - asset: fonts/Montserrat-Bold-700.ttf
+        - asset: fonts/Montserrat-Medium-500.ttf

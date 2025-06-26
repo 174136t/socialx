@@ -1,5 +1,6 @@
-class GeneratedImage {
-  final String url;
+import 'dart:typed_data';
 
-  GeneratedImage({required this.url});
+class GeneratedImage {
+  final Uint8List imageBytes;
+  GeneratedImage({required this.imageBytes});
 }

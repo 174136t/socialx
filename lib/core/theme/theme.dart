@@ -21,5 +21,8 @@ class AppTheme {
       focusedBorder: _border(AppPallete.gradient2),
       errorBorder: _border(AppPallete.errorColor)
     ),
+    textTheme: ThemeData.dark().textTheme.apply(
+      fontFamily: 'Montserrat',
+    ),
   );
 }
