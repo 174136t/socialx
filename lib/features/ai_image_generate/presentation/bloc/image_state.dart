@@ -8,8 +8,8 @@ final class ImageInitial extends ImageState {}
 final class ImageLoading extends ImageState {}
 
 final class ImageLoaded extends ImageState {
-  final Uint8List imageBytes;
-  ImageLoaded({required this.imageBytes});
+  final File image;
+  ImageLoaded({required this.image});
 }
 
 final class ImageError extends ImageState {

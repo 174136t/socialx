@@ -23,7 +23,7 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
       Map<String, dynamic> payload = {
         'prompt': prompt,
         'style': 'imagine-turbo',
-        'aspect_ratio': '1:1',
+        'aspect_ratio': '16:9',
       };
 
       FormData formData = FormData.fromMap(payload);

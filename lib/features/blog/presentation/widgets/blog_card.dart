@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:socialx/core/theme/app_pallette.dart';
 import 'package:socialx/core/utils/bounce_tap.dart';
 import 'package:socialx/core/utils/calculate_reading_time.dart';
 import 'package:socialx/features/blog/domain/entities/blog.dart';
 import 'package:socialx/features/blog/presentation/pages/blog_viewer.page.dart';
+import 'package:socialx/features/blog/presentation/widgets/overlay_message_box.dart';
 
 class BlogCard extends StatelessWidget {
   final Blog blog;
@@ -52,40 +54,49 @@ class BlogCard extends StatelessWidget {
               // color: color,
               borderRadius: BorderRadius.circular(8),
             ),
-      
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
                         children:
                             blog.topics
                                 .map(
                                   (e) => Padding(
                                     padding: const EdgeInsets.only(right: 5),
-                                    child: Chip(label: Text(e)),
+                                    child: Chip(
+                                      label: Text(
+                                        e,
+                                        style: TextStyle(
+                                          color: AppPallete.whiteColor,
+                                        ),
+                                      ),
+                                      color: WidgetStatePropertyAll(
+                                        AppPallete.gradient2.withAlpha(150),
+                                      ),
+                                    ),
                                   ),
                                 )
                                 .toList(),
                       ),
-                      Text(
-                        blog.title,
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    OverlayMessageBox(title: blog.title, fontSize: 20),
+                  ],
                 ),
-      
                 Column(
-                  children: [Text('${calculateReadingTime(blog.content)} min')],
+                  children: [
+                    OverlayMessageBox(
+                      title: '${calculateReadingTime(blog.content)} min',
+                      fontSize: 12,
+                    ),
+                  ],
                 ),
               ],
             ),

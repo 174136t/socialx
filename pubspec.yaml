@@ -23,15 +23,19 @@ dependencies:
   dotted_border: ^2.1.0
   image_picker: ^1.1.2
   uuid: ^4.3.3
-  intl: ^0.19.0
+  intl: ^0.20.2
   internet_connection_checker_plus: ^2.2.0
   hive: ^4.0.0-dev.2
   isar_flutter_libs: ^4.0.0-dev.13
-  path_provider: ^2.1.0
   cached_network_image: ^3.4.1
   dio: ^5.8.0+1
   shimmer: ^3.0.0
   animated_notch_bottom_bar: ^1.0.3
+  equatable: ^2.0.5
+  json_annotation: ^4.8.1
+  flutter_stripe: ^10.1.1
+  path_provider: ^2.1.5
+  app_links: ^6.4.0
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +43,8 @@ dev_dependencies:
 
   
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
 
 
 

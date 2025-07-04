@@ -8,7 +8,7 @@ class Blog {
   final DateTime updatedAt;
   final String? posterName;
 
-  Blog({
+  const Blog({
     required this.id,
     required this.posterId,
     required this.title,

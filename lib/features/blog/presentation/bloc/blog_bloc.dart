@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialx/core/error/failures.dart';
 import 'package:socialx/core/usecase/usecase.dart';
 import 'package:socialx/features/blog/domain/entities/blog.dart';
 import 'package:socialx/features/blog/domain/usecases/get_all_blogs.dart';
@@ -33,7 +34,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
       ),
     );
 
-    res.fold((l) => emit(BlogFailure(l.message)), (r) => emit(BlogUploadSuccess()));
+    res.fold((l) => emit(BlogFailure(mapFailureToMessage(l))), (r) => emit(BlogUploadSuccess()));
   }
 
   void _onFetchAllBlogs(
@@ -42,6 +43,6 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
   ) async {
     final res = await _getAllBlogs(NoParams());
 
-    res.fold((l) => emit(BlogFailure(l.message)), (r) => emit(BlogDisplaySuccess(r)));
+    res.fold((l) => emit(BlogFailure(mapFailureToMessage(l))), (r) => emit(BlogDisplaySuccess(r)));
   }
 }

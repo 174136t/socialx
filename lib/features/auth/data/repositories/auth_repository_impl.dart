@@ -20,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
         final session = remoteDataSource.currentUserSession;
 
         if (session == null) {
-          return Left(Failure("User is not logged in"));
+          return Left(ServerFailure("User is not logged in"));
         } else {
           return Right(
             UserModel(
@@ -35,12 +35,12 @@ class AuthRepositoryImpl implements AuthRepository {
       final user = await remoteDataSource.getCurrentUserData();
 
       if (user == null) {
-        return Left(Failure("User is not logged in"));
+        return Left(ServerFailure("User is not logged in"));
       }
 
       return Right(user);
     } on ServerException catch (e) {
-      return Left(Failure(e.message));
+      return Left(ServerFailure(e.message));
     }
   }
 
@@ -75,14 +75,14 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> _getUser(Future<User> Function() fn) async {
     try {
       if (!await (connectionChecker.isConnected)) {
-        return left(Failure(Constants.noConnectionErrorMsg));
+        return left(NetworkFailure(Constants.noConnectionErrorMsg));
       }
 
       final user = await fn();
 
       return Right(user);
     } on ServerException catch (e) {
-      return Left(Failure(e.message));
+      return Left(ServerFailure(e.message));
     }
   }
 }

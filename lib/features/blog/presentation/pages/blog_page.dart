@@ -1,13 +1,15 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialx/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:socialx/core/common/entities/user.dart';
 import 'package:socialx/core/common/widgets/loader.dart';
 import 'package:socialx/core/theme/app_pallette.dart';
 import 'package:socialx/core/utils/show_snackbar.dart';
 import 'package:socialx/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:socialx/features/blog/presentation/pages/add_new_blog_page.dart';
 import 'package:socialx/features/blog/presentation/widgets/blog_card.dart';
+import 'package:socialx/features/payment/presentation/pages/payment_tab_page.dart';
 
 class BlogPage extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => const BlogPage());
@@ -21,11 +23,13 @@ class BlogPage extends StatefulWidget {
 class _BlogPageState extends State<BlogPage> {
   int currentSelectedTabIndex = 0;
   final NotchBottomBarController _controller = NotchBottomBarController();
+  late User user;
 
   @override
   void initState() {
     super.initState();
     context.read<BlogBloc>().add(BlogFetchAllBlogs());
+    user = (context.read<AppUserCubit>().state as AppUserLoggedIn).user;
   }
 
   @override
@@ -33,17 +37,6 @@ class _BlogPageState extends State<BlogPage> {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Blog Page'),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {
-      //         Navigator.push(context, AddNewBlogPage.route());
-      //       },
-      //       icon: Icon(CupertinoIcons.add_circled),
-      //     ),
-      //   ],
-      // ),
       body: BlocConsumer<BlogBloc, BlogState>(
         listener: (context, state) {
           if (state is BlogFailure) {
@@ -63,11 +56,14 @@ class _BlogPageState extends State<BlogPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text("Hello Lahiru,", style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: 'monsterrat',
-                          fontWeight: FontWeight.bold,
-                        ),),
+                        child: Text(
+                          "Hello ${user.name},",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: 'monsterrat',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       SizedBox(height: 20),
                       ListView.builder(
@@ -75,7 +71,8 @@ class _BlogPageState extends State<BlogPage> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.blogs.length,
                         itemBuilder: (context, index) {
-                          final blog = state.blogs[index];
+                          final blogs = state.blogs.reversed.toList();
+                          final blog = blogs[index];
                           return BlogCard(
                             blog: blog,
                             color:
@@ -91,7 +88,8 @@ class _BlogPageState extends State<BlogPage> {
                   ),
                 ),
               ),
-              AddNewBlogPage(),
+              // AddNewBlogPage(),
+              PaymentTabPage(),
             ][currentSelectedTabIndex];
           }
 
@@ -111,15 +109,15 @@ class _BlogPageState extends State<BlogPage> {
             activeItem: Icon(Icons.home_filled, color: Colors.white),
             itemLabel: 'Home',
           ),
+          // const BottomBarItem(
+          //   inActiveItem: Icon(Icons.add_circle, color: Colors.white),
+          //   activeItem: Icon(Icons.add_circle, color: Colors.white),
+          //   itemLabel: 'Add Blog',
+          // ),
           const BottomBarItem(
-            inActiveItem: Icon(Icons.add_circle, color: Colors.white),
-            activeItem: Icon(Icons.add_circle, color: Colors.white),
-            itemLabel: 'Add Blog',
-          ),
-          const BottomBarItem(
-            inActiveItem: Icon(Icons.book, color: Colors.white),
-            activeItem: Icon(Icons.book, color: Colors.white),
-            itemLabel: 'My Blogs',
+            inActiveItem: Icon(Icons.person, color: Colors.white),
+            activeItem: Icon(Icons.person, color: Colors.white),
+            itemLabel: 'Profile',
           ),
         ],
         kIconSize: 24,
@@ -131,6 +129,40 @@ class _BlogPageState extends State<BlogPage> {
         notchColor: AppPallete.gradient1,
         itemLabelStyle: TextStyle(color: Colors.white, fontSize: 12.0),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddNewBlogPage()),
+          );
+        },
+        backgroundColor: AppPallete.whiteColor,
+        child: Icon(Icons.add_circle, color: AppPallete.gradient1),
+      ),
+      floatingActionButtonLocation: CenteredFloatingButtonLocation(yOffset: 80),
+
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
+  }
+}
+
+class CenteredFloatingButtonLocation extends FloatingActionButtonLocation {
+  final double yOffset;
+
+  CenteredFloatingButtonLocation({required this.yOffset});
+
+  @override
+  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
+    // Widths
+    final double fabWidth = scaffoldGeometry.floatingActionButtonSize.width;
+    final double scaffoldWidth = scaffoldGeometry.scaffoldSize.width;
+
+    // Center X offset
+    final double fabX = (scaffoldWidth - fabWidth) / 2;
+
+    // From bottom (yOffset)
+    final double fabY = scaffoldGeometry.scaffoldSize.height - yOffset;
+
+    return Offset(fabX, fabY);
   }
 }

@@ -1,15 +1,21 @@
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:socialx/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:socialx/core/secrets/app_secrets.dart';
 import 'package:socialx/core/theme/theme.dart';
+import 'package:socialx/features/ai_image_generate/presentation/bloc/image_bloc.dart';
 import 'package:socialx/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:socialx/features/auth/presentation/pages/signin_page.dart';
 import 'package:socialx/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:socialx/features/blog/presentation/pages/blog_page.dart';
+import 'package:socialx/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:socialx/init_dependancy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = AppSecrets.stripePublishableKey;
   await initDependencies();
   runApp(
     MultiBlocProvider(
@@ -17,6 +23,8 @@ void main() async {
         BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
         BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
         BlocProvider(create: (_) => serviceLocator<BlogBloc>()),
+        BlocProvider(create: (_) => serviceLocator<PaymentBloc>()),
+        BlocProvider(create: (_) => serviceLocator<ImageBloc>()),
       ],
 
       child: const MyApp(),
@@ -64,7 +72,7 @@ class _MyAppState extends State<MyApp> {
 
 
 
-// abstraction hiding complex imlementation details and showing only essential features
+// // abstraction hiding complex imlementation details and showing only essential features
 // abstract class NotificationService {
 //   void sendNotifications(String msg);
 // }

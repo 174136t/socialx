@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialx/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:socialx/core/error/failures.dart';
 import 'package:socialx/core/usecase/usecase.dart';
 import 'package:socialx/core/common/entities/user.dart';
 import 'package:socialx/features/auth/domain/usecases/current_user.dart';
@@ -43,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     response.fold(
-      (failure) => emit(AuthFailure(failure.message)),
+      (failure) => emit(AuthFailure(mapFailureToMessage(failure))),
       (user) => _emitAuthSuccess(user, emit),
     );
   }
@@ -55,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     response.fold(
-      (failure) => emit(AuthFailure(failure.message)),
+      (failure) => emit(AuthFailure(mapFailureToMessage(failure))),
       (user) => _emitAuthSuccess(user, emit),
     );
   }
@@ -67,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final res = await _currentUser(NoParams());
 
     res.fold(
-      (failure) => emit(AuthFailure(failure.message)),
+      (failure) => emit(AuthFailure(mapFailureToMessage(failure))),
       (user) => _emitAuthSuccess(user, emit),
     );
   }
@@ -76,4 +77,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _appUserCubit.updateUser(user);
     emit(AuthSuccess(user));
   }
+
+//   String _mapFailureToMessage(Failure failure) {
+//   if (failure is ServerFailure) return failure.message;
+//   if (failure is NetworkFailure) return "No internet connection";
+//   if (failure is PaymentFailure) return failure.message;
+//   if (failure is CacheFailure) return "Something went wrong with local storage";
+//   return "Unexpected error occurred";
+// }
 }

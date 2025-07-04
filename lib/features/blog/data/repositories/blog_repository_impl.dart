@@ -33,7 +33,7 @@ class BlogRepositoryImpl implements BlogRepository {
   }) async {
     try {
       if (!await (connectionChecker.isConnected)) {
-        return left(Failure(Constants.noConnectionErrorMsg));
+        return left(NetworkFailure(Constants.noConnectionErrorMsg));
       }
 
       BlogModel blogModel = BlogModel(
@@ -57,7 +57,7 @@ class BlogRepositoryImpl implements BlogRepository {
 
       return Right(uploadedBlog);
     } on ServerException catch (e) {
-      return Left(Failure(e.message));
+      return Left(ServerFailure(e.message));
     }
   }
 
@@ -75,7 +75,7 @@ class BlogRepositoryImpl implements BlogRepository {
 
       return Right(blogs);
     } on ServerException catch (e) {
-      return Left(Failure(e.message));
+      return Left(ServerFailure(e.message));
     }
   }
 }
